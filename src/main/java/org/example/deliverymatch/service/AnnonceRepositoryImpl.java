@@ -1,15 +1,16 @@
-package org.example.deliverymatch.repository;
+package org.example.deliverymatch.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.example.deliverymatch.model.Annonce;
 import org.example.deliverymatch.model.QAnnonce;
+import org.example.deliverymatch.repository.AnnonceRepositoryCustom;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class  AnnonceRepositoryImpl  implements AnnonceRepositoryCustom  {
+public class  AnnonceRepositoryImpl  implements AnnonceRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     public AnnonceRepositoryImpl(EntityManager em) {

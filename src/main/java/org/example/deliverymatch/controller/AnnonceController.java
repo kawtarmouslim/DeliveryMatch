@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/api/v1/")
 public class AnnonceController {
     private AnnonceService annonceService;
+
     @PostMapping("/publier")
     public ResponseEntity<AnnonceDto>publishAnnonce(@RequestBody AnnonceDto annonceDto){
         AnnonceDto annonce = annonceService.publierAnnonce(annonceDto);
