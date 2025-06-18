@@ -14,10 +14,10 @@ import java.util.List;
 public class UtilisateurController {
     private  final UtilisateurService utilisateurService;
     @PostMapping("/add")
-    public ResponseEntity<UtilisateurDto>createUtilisateur(@RequestBody UtilisateurDto utilisateurDto){
-        UtilisateurDto utilisateurDto1=utilisateurService.createUtilisateur(utilisateurDto);
-        return ResponseEntity.ok(utilisateurDto1);
+    public UtilisateurDto createUtilisateur(@RequestBody UtilisateurDto dto) {
+        return utilisateurService.createUtilisateur(dto);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<UtilisateurDto>update(@PathVariable long id, @RequestBody UtilisateurDto utilisateurDto){
             UtilisateurDto utilisateurDto1=utilisateurService.updateUtilisateur(id, utilisateurDto);

@@ -1,14 +1,15 @@
 package org.example.deliverymatch.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "dtype")
+@Getter
+@Setter
 public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +18,5 @@ public class Utilisateur {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
     private Role role;
 }
