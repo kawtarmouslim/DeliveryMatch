@@ -64,6 +64,10 @@ public class AnnonceService {
         return modelMapper.map(savedAnnonce, AnnonceDto.class);
 
     }
+    public void deleteAnnonce(Long id) {
+
+         annonceRepository.deleteById(id);
+     }
 
 
 }

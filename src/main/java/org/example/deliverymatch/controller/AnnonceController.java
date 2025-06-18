@@ -32,4 +32,9 @@ public class AnnonceController {
         AnnonceDto annonceDto1=annonceService.updateAnnonce(idAnonce, annonceDto);
         return ResponseEntity.ok(annonceDto1);
     }
+    @DeleteMapping("/{idDelete}")
+    public ResponseEntity<AnnonceDto> deleteAnnonce(@PathVariable Long idDelete) {
+        annonceService.deleteAnnonce(idDelete);
+        return ResponseEntity.ok().build();
+    }
 }
