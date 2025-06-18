@@ -18,5 +18,6 @@ public class AnnonceDto implements Serializable {
     double dimension;
     String typeColis;
     private Long conducteurId;
+    private Boolean blender;
 
 }

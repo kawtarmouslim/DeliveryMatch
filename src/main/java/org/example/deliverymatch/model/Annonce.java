@@ -24,5 +24,6 @@ public class Annonce {
     @ManyToOne
     @JoinColumn(name = "conducteur_id") // nom correct pour la colonne
     private Conducteur conducteur; //
+    private Boolean blender;
 
 }

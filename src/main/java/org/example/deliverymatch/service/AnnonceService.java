@@ -32,15 +32,15 @@ public class AnnonceService {
         resultDto.setConducteurId(conducteur.getId());
         return resultDto;
     }
-    public List<AnnonceDto> getAnnoncesByDestination(String destination) {
-        List<Annonce> annonces = annonceRepository.findByDestination(destination);
-        return annonces.stream()
+
+
+    public List<AnnonceDto> searchAnnonces(String destination, String typeColis, Boolean blender) {
+        return annonceRepository.searchAnnonces(destination, typeColis, blender)
+                .stream()
                 .map(a -> {
                     AnnonceDto dto = modelMapper.map(a, AnnonceDto.class);
-                    dto.setIdAnnonce(a.getIdAnnonce()); // correspondance entre entité et DTO
-                    if (a.getConducteur() != null) {
-                        dto.setConducteurId(a.getConducteur().getId());
-                    }
+                    dto.setIdAnnonce(a.getIdAnnonce());
+                    dto.setConducteurId(a.getConducteur() != null ? a.getConducteur().getId() : null);
                     return dto;
                 })
                 .collect(Collectors.toList());
