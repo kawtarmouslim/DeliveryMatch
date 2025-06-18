@@ -2,11 +2,10 @@ package org.example.deliverymatch.controller;
 
 import lombok.AllArgsConstructor;
 import org.example.deliverymatch.dto.DemandeDto;
+import org.example.deliverymatch.model.StatutDemande;
 import org.example.deliverymatch.service.DemandeService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/demande")
@@ -18,6 +17,15 @@ public class DemandeController {
         DemandeDto demandeDto=service.demander(dto);
         return demandeDto;
 
+    }
+    @PutMapping("/{demandeId}/statut")
+    public ResponseEntity<DemandeDto> changerStatutDemande(
+            @PathVariable Long demandeId,
+            @RequestParam StatutDemande statut,
+            @RequestParam Long conducteurId) {
+
+        DemandeDto updatedDemande = service.changerStatutDemande(demandeId, statut, conducteurId);
+        return ResponseEntity.ok(updatedDemande);
     }
 
 

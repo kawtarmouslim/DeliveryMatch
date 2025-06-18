@@ -25,6 +25,16 @@ public class Demande {
     @ManyToOne
     @JoinColumn(name = "id_expediteur")
     private Expéditeur expediteur;
+    @Enumerated(EnumType.STRING)
+    private StatutDemande statut ;
+
+    public StatutDemande getStatut() {
+        return statut;
+    }
+
+    public void setStatut(StatutDemande statut) {
+        this.statut = statut;
+    }
 
     public int getIdDemande() {
         return idDemande;
