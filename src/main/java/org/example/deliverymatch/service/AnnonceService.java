@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,15 +25,25 @@ public class AnnonceService {
                 .filter(u -> u instanceof Conducteur)
                 .map(u -> (Conducteur) u)
                 .orElseThrow(() -> new RuntimeException("Conducteur not found"));
-
         Annonce annonce = modelMapper.map(annonceDto, Annonce.class);
-        annonce.setConducteur(conducteur); // association correcte
-
+        annonce.setConducteur(conducteur);
         Annonce savedAnnonce = annonceRepository.save(annonce);
-
         AnnonceDto resultDto = modelMapper.map(savedAnnonce, AnnonceDto.class);
-        resultDto.setConducteurId(conducteur.getId()); // ajouter l'ID conducteur dans la réponse
+        resultDto.setConducteurId(conducteur.getId());
         return resultDto;
+    }
+    public List<AnnonceDto> getAnnoncesByDestination(String destination) {
+        List<Annonce> annonces = annonceRepository.findByDestination(destination);
+        return annonces.stream()
+                .map(a -> {
+                    AnnonceDto dto = modelMapper.map(a, AnnonceDto.class);
+                    dto.setIdAnnonce(a.getIdAnnonce()); // correspondance entre entité et DTO
+                    if (a.getConducteur() != null) {
+                        dto.setConducteurId(a.getConducteur().getId());
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
 
