@@ -27,5 +27,9 @@ public class AnnonceController {
     ) {
         return annonceService.searchAnnonces(destination, typeColis);
     }
-
+    @PutMapping("anonce/{idAnonce}")
+     public ResponseEntity<AnnonceDto> updateAnnonce(@PathVariable Long idAnonce, @RequestBody AnnonceDto annonceDto) {
+        AnnonceDto annonceDto1=annonceService.updateAnnonce(idAnonce, annonceDto);
+        return ResponseEntity.ok(annonceDto1);
+    }
 }
