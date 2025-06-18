@@ -19,13 +19,13 @@ public class AnnonceController {
         AnnonceDto annonce = annonceService.publierAnnonce(annonceDto);
         return ResponseEntity.ok(annonce);
     }
-    @GetMapping("/search/{destination}/{typeColis}/{blender}")
+    @GetMapping("/search/{destination}/{typeColis}")
     public List<AnnonceDto> search(
             @PathVariable String destination,
-            @PathVariable String typeColis,
-            @PathVariable Boolean blender
+            @PathVariable String typeColis
+
     ) {
-        return annonceService.searchAnnonces(destination, typeColis, blender);
+        return annonceService.searchAnnonces(destination, typeColis);
     }
 
 }

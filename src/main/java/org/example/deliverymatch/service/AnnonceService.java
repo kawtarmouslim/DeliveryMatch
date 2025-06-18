@@ -21,9 +21,8 @@ public class AnnonceService {
     private final UtilisateurRepository utilisateurRepository;
     private  final ModelMapper modelMapper;
     public AnnonceDto publierAnnonce(AnnonceDto annonceDto) {
-        Conducteur conducteur = utilisateurRepository.findById(annonceDto.getConducteurId())
-                .filter(u -> u instanceof Conducteur)
-                .map(u -> (Conducteur) u)
+        Conducteur conducteur = (Conducteur) utilisateurRepository.findById(annonceDto.getConducteurId())
+
                 .orElseThrow(() -> new RuntimeException("Conducteur not found"));
         Annonce annonce = modelMapper.map(annonceDto, Annonce.class);
         annonce.setConducteur(conducteur);
@@ -34,8 +33,8 @@ public class AnnonceService {
     }
 
 
-    public List<AnnonceDto> searchAnnonces(String destination, String typeColis, Boolean blender) {
-        return annonceRepository.searchAnnonces(destination, typeColis, blender)
+    public List<AnnonceDto> searchAnnonces(String destination, String typeColis) {
+        return annonceRepository.searchAnnonces(destination, typeColis)
                 .stream()
                 .map(a -> {
                     AnnonceDto dto = modelMapper.map(a, AnnonceDto.class);

@@ -18,14 +18,13 @@ public class  AnnonceRepositoryImpl  implements AnnonceRepositoryCustom {
     }
 
     @Override
-    public List<Annonce> searchAnnonces(String destination, String typeColis, Boolean blender) {
+    public List<Annonce> searchAnnonces(String destination, String typeColis ){
        QAnnonce annonce = QAnnonce.annonce;
 
         return queryFactory.selectFrom(annonce)
                 .where(
                         destination != null ? annonce.destination.eq(destination) : null,
-                        typeColis != null ? annonce.typeColis.eq(typeColis) : null,
-                        blender != null ? annonce.blender.eq(blender) : null
+                        typeColis != null ? annonce.typeColis.eq(typeColis) : null
                 )
                 .fetch();
     }
