@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.example.deliverymatch.dto.AnnonceDto;
 import org.example.deliverymatch.service.AnnonceService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +15,13 @@ import java.util.List;
 public class AnnonceController {
     private AnnonceService annonceService;
 
+    @PreAuthorize("hasRole('CONDUCTEUR')")
     @PostMapping("/publier")
     public ResponseEntity<AnnonceDto>publishAnnonce(@RequestBody AnnonceDto annonceDto){
         AnnonceDto annonce = annonceService.publierAnnonce(annonceDto);
         return ResponseEntity.ok(annonce);
     }
+    @PreAuthorize("hasAnyRole('EXPEDITEUR', 'CONDUCTEUR')")
     @GetMapping("/search/{destination}/{typeColis}")
     public List<AnnonceDto> search(
             @PathVariable String destination,
@@ -27,11 +30,13 @@ public class AnnonceController {
     ) {
         return annonceService.searchAnnonces(destination, typeColis);
     }
+    @PreAuthorize("hasRole('ADMINISTRATEUR')")
     @PutMapping("anonce/{idAnonce}")
      public ResponseEntity<AnnonceDto> updateAnnonce(@PathVariable Long idAnonce, @RequestBody AnnonceDto annonceDto) {
         AnnonceDto annonceDto1=annonceService.updateAnnonce(idAnonce, annonceDto);
         return ResponseEntity.ok(annonceDto1);
     }
+    @PreAuthorize("hasRole('ADMINISTRATEUR')")
     @DeleteMapping("/{idDelete}")
     public ResponseEntity<AnnonceDto> deleteAnnonce(@PathVariable Long idDelete) {
         annonceService.deleteAnnonce(idDelete);
