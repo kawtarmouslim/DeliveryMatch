@@ -68,6 +68,12 @@ public class AnnonceService {
 
          annonceRepository.deleteById(id);
      }
+     public List<AnnonceDto> getAnnonces() {
+        List<Annonce> annonces = annonceRepository.findAll();
+     return annonces.stream().map(u->modelMapper.map(u, AnnonceDto.class))
+             .collect(Collectors.toList());
+
+     }
 
 
 }

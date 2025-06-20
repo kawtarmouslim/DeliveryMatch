@@ -2,6 +2,9 @@ package org.example.deliverymatch.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.example.deliverymatch.config.JwtService;
+import org.example.deliverymatch.model.Adiministarteur;
+import org.example.deliverymatch.model.Conducteur;
+import org.example.deliverymatch.model.Expéditeur;
 import org.example.deliverymatch.model.Utilisateur;
 import org.example.deliverymatch.repository.UtilisateurRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,21 +26,45 @@ public class AuthenticationService {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
-
     public AuthenticationResponse register(RegisterRequest request) {
+        Utilisateur user;
 
-        var user = Utilisateur.builder()
-                .nom(request.getNom())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
-                .build();
-        repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .build();
+        // Decide which subclass to create based on role
+        switch (request.getRole()) {
+            case ADMINISTRATEUR -> user = new Adiministarteur();
+            case CONDUCTEUR -> user = new Conducteur();
+            case EXPEDITEUR -> user = new Expéditeur();
+
+            default -> throw new IllegalArgumentException("Invalid role: " + request.getRole());
+        }
+
+        user.setNom(request.getNom()); // or request.getUsername()
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+
+        repository.save(user); // use appropriate repository for the subclass
+
+        String jwtToken = jwtService.generateToken(user);
+
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setAccessToken(jwtToken);
+        return response;
     }
+//    public AuthenticationResponse register(RegisterRequest request) {
+//
+//        var user = Utilisateur.builder()
+//                .nom(request.getNom())
+//                .email(request.getEmail())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .role(request.getRole())
+//                .build();
+//        repository.save(user);
+//        var jwtToken = jwtService.generateToken(user);
+//        return AuthenticationResponse.builder()
+//                .accessToken(jwtToken)
+//                .build();
+//    }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(

@@ -1,5 +1,6 @@
 package org.example.deliverymatch.config;
 
+import org.example.deliverymatch.model.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -30,7 +31,11 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-//                        .requestMatchers("/api/v1/**").hasAnyRole("CONDUCTEUR", "ADMINISTRATEUR", "EXPEDITEUR")
+                        .requestMatchers("/api/v1/publier").hasAnyAuthority(Role.CONDUCTEUR.name())
+                        .requestMatchers("/api/v1/anonces").hasAnyAuthority(Role.CONDUCTEUR.name(),Role.EXPEDITEUR.name(),Role.ADMINISTRATEUR.name())
+                        .requestMatchers("/api/v1/anonce/{idAnonce}").hasAnyAuthority(Role.ADMINISTRATEUR.name())
+                      .requestMatchers("/api/v1/demande/demander").hasAnyAuthority(Role.EXPEDITEUR.name())
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
