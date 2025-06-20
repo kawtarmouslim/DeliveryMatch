@@ -17,7 +17,7 @@ public class AnnonceDto implements Serializable {
     int capacite;
     double dimension;
     String typeColis;
-    private Long conducteurId;
+
 
 
 }

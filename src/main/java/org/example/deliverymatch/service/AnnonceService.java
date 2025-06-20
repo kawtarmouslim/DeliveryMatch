@@ -8,6 +8,7 @@ import org.example.deliverymatch.model.Utilisateur;
 import org.example.deliverymatch.repository.AnnonceRepository;
 import org.example.deliverymatch.repository.UtilisateurRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class AnnonceService {
     private  final ModelMapper modelMapper;
     public AnnonceDto publierAnnonce(AnnonceDto annonceDto) {
 
-        Conducteur conducteur = (Conducteur) utilisateurRepository.findById(annonceDto.getConducteurId())
-                .orElseThrow(() -> new RuntimeException("Conducteur not found"));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Conducteur conducteur = (Conducteur) utilisateurRepository.findByEmail(email).get();
 
         Annonce annonce = modelMapper.map(annonceDto, Annonce.class);
 
@@ -33,7 +34,7 @@ public class AnnonceService {
 
         AnnonceDto resultDto = modelMapper.map(savedAnnonce, AnnonceDto.class);
 
-        resultDto.setConducteurId(conducteur.getId());
+//        resultDto.setConducteurId(conducteur.getId());
 
         return resultDto;
     }
@@ -45,7 +46,7 @@ public class AnnonceService {
                 .map(a -> {
                     AnnonceDto dto = modelMapper.map(a, AnnonceDto.class);
                     dto.setIdAnnonce(a.getIdAnnonce());
-                    dto.setConducteurId(a.getConducteur() != null ? a.getConducteur().getId() : null);
+//                    dto.setConducteurId(a.getConducteur() != null ? a.getConducteur().getId() : null);
                     return dto;
                 })
                 .collect(Collectors.toList());

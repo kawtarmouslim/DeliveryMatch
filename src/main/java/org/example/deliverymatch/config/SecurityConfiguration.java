@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/publier").hasAnyAuthority(Role.CONDUCTEUR.name())
                         .requestMatchers("/api/v1/anonces").hasAnyAuthority(Role.CONDUCTEUR.name(),Role.EXPEDITEUR.name(),Role.ADMINISTRATEUR.name())
-                        .requestMatchers("/api/v1/anonce/{idAnonce}").hasAnyAuthority(Role.ADMINISTRATEUR.name())
+//                        .requestMatchers("/api/v1/anonce/{idAnonce}").hasAnyAuthority(Role.ADMINISTRATEUR.name())
                       .requestMatchers("/api/v1/demande/demander").hasAnyAuthority(Role.EXPEDITEUR.name())
                       .requestMatchers("/**").permitAll()
 

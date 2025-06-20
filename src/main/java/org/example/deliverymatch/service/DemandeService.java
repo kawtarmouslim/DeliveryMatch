@@ -11,6 +11,7 @@ import org.example.deliverymatch.repository.AnnonceRepository;
 import org.example.deliverymatch.repository.DemandeRepository;
 import org.example.deliverymatch.repository.UtilisateurRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class DemandeService {
     private final ModelMapper modelMapper;
     public DemandeDto demander(DemandeDto dto) {
 
-        Expéditeur expéditeur= (Expéditeur) utilisateurRepository.findById(dto.getExpediteurId())
-                .orElseThrow(() -> new RuntimeException("Expediteur not found"));
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Expéditeur expéditeur = (Expéditeur) utilisateurRepository.findByEmail(email).get();
 
         Annonce annonce=annonceRepository.findById(dto.getAnnonceIdAnnonce())
                 .orElseThrow(() -> new RuntimeException("annonce not found"));
