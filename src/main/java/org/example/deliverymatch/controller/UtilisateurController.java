@@ -13,10 +13,10 @@ import java.util.List;
 @RequestMapping ("api/v1/")
 public class UtilisateurController {
     private  final UtilisateurService utilisateurService;
-    @PostMapping("/add")
-    public UtilisateurDto createUtilisateur(@RequestBody UtilisateurDto dto) {
-        return utilisateurService.createUtilisateur(dto);
-    }
+//    @PostMapping("/add")
+//    public UtilisateurDto createUtilisateur(@RequestBody UtilisateurDto dto) {
+//        return utilisateurService.createUtilisateur(dto);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UtilisateurDto>update(@PathVariable long id, @RequestBody UtilisateurDto utilisateurDto){

@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+ @Getter
 @Setter
 public class AnnonceDto implements Serializable {
     Long idAnnonce;
@@ -17,7 +17,5 @@ public class AnnonceDto implements Serializable {
     int capacite;
     double dimension;
     String typeColis;
-
-
-
+    Long conducteurId;
 }

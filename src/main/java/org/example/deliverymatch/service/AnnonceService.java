@@ -2,9 +2,8 @@ package org.example.deliverymatch.service;
 
 import lombok.AllArgsConstructor;
 import org.example.deliverymatch.dto.AnnonceDto;
-import org.example.deliverymatch.model.Annonce;
-import org.example.deliverymatch.model.Conducteur;
-import org.example.deliverymatch.model.Utilisateur;
+import org.example.deliverymatch.dto.DemandeDto;
+import org.example.deliverymatch.model.*;
 import org.example.deliverymatch.repository.AnnonceRepository;
 import org.example.deliverymatch.repository.UtilisateurRepository;
 import org.modelmapper.ModelMapper;
@@ -15,31 +14,55 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.example.deliverymatch.model.QDemande.demande;
+import static org.example.deliverymatch.model.QExpéditeur.expéditeur;
+
 @Service
 @AllArgsConstructor
 public class AnnonceService {
     private final AnnonceRepository annonceRepository;
     private final UtilisateurRepository utilisateurRepository;
     private  final ModelMapper modelMapper;
-    public AnnonceDto publierAnnonce(AnnonceDto annonceDto) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Conducteur conducteur = (Conducteur) utilisateurRepository.findByEmail(email).get();
+//    public AnnonceDto publierAnnonce(AnnonceDto annonceDto) {
+//        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+//        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findByEmail(email);
+//        Conducteur conducteur = optionalUtilisateur
+//                .filter(u -> u instanceof Conducteur)
+//                .map(u -> (Conducteur) u)
+//                .orElseThrow(() -> new RuntimeException("Conducteur non trouvé ou ID manquant pour l'email : " + email));
+//
+//        Annonce annonce = new Annonce();
+//        annonce.setIdAnnonce(annonceDto.getIdAnnonce());
+//        annonce.setDepart(annonceDto.getDepart());
+//        annonce.setEtape(annonceDto.getEtape());
+//        annonce.setDestination(annonceDto.getDestination());
+//        annonce.setCapacite(annonceDto.getCapacite());
+//        annonce.setDimension(annonceDto.getDimension());
+//        annonce.setTypeColis(annonceDto.getTypeColis());
+//        annonce.setConducteur(conducteur);
+//
+//        Annonce savedAnnonce = annonceRepository.save(annonce);
+//        AnnonceDto resultDto = modelMapper.map(savedAnnonce, AnnonceDto.class);
+//        resultDto.setConducteur_id(conducteur.getId()); // Forcer la valeur
+//        return resultDto;
+//    }
+public AnnonceDto publierAnnonce(AnnonceDto dto) {
 
-        Annonce annonce = modelMapper.map(annonceDto, Annonce.class);
-
-        annonce.setConducteur(conducteur);
-
-        Annonce savedAnnonce = annonceRepository.save(annonce);
-
-        AnnonceDto resultDto = modelMapper.map(savedAnnonce, AnnonceDto.class);
-
-//        resultDto.setConducteurId(conducteur.getId());
-
-        return resultDto;
-    }
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    Conducteur conducteur = (Conducteur) utilisateurRepository.findByEmail(email).get();
 
 
+
+    Annonce annonce = modelMapper.map(dto, Annonce.class);
+    annonce.setConducteur(conducteur);
+
+    Annonce saveAnonce=annonceRepository.save(annonce);
+    AnnonceDto rsult=modelMapper.map(saveAnonce, AnnonceDto.class);
+    rsult.setConducteurId(saveAnonce.getConducteur().getId());
+
+    return rsult;
+}
     public List<AnnonceDto> searchAnnonces(String destination, String typeColis) {
         return annonceRepository.searchAnnonces(destination, typeColis)
                 .stream()
@@ -69,6 +92,7 @@ public class AnnonceService {
 
          annonceRepository.deleteById(id);
      }
+
      public List<AnnonceDto> getAnnonces() {
         List<Annonce> annonces = annonceRepository.findAll();
      return annonces.stream().map(u->modelMapper.map(u, AnnonceDto.class))

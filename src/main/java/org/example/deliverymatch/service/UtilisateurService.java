@@ -17,24 +17,24 @@ import java.util.stream.Collectors;
 public class UtilisateurService {
     private final UtilisateurRepository utilisateurRepository;
     private  final ModelMapper modelMapper;
-    public UtilisateurDto createUtilisateur(UtilisateurDto utilisateurDto) {
-        Utilisateur utilisateur;
-
-        switch (utilisateurDto.getRole()) {
-            case CONDUCTEUR:
-                utilisateur = modelMapper.map(utilisateurDto, Conducteur.class);
-                break;
-            case EXPEDITEUR:
-                utilisateur = modelMapper.map(utilisateurDto, Expéditeur.class);
-                break;
-
-            default:
-                throw new IllegalArgumentException("Rôle inconnu : " + utilisateurDto.getRole());
-        }
-
-        Utilisateur saved = utilisateurRepository.save(utilisateur);
-        return modelMapper.map(saved, UtilisateurDto.class);
-    }
+//    public UtilisateurDto createUtilisateur(UtilisateurDto utilisateurDto) {
+//        Utilisateur utilisateur;
+//
+//        switch (utilisateurDto.getRole()) {
+//            case CONDUCTEUR:
+//                utilisateur = modelMapper.map(utilisateurDto, Conducteur.class);
+//                break;
+//            case EXPEDITEUR:
+//                utilisateur = modelMapper.map(utilisateurDto, Expéditeur.class);
+//                break;
+//
+//            default:
+//                throw new IllegalArgumentException("Rôle inconnu : " + utilisateurDto.getRole());
+//        }
+//
+//        Utilisateur saved = utilisateurRepository.save(utilisateur);
+//        return modelMapper.map(saved, UtilisateurDto.class);
+//    }
 
     public List<UtilisateurDto> getAllUtilisateurs() {
         List<Utilisateur> utilisateurs=utilisateurRepository.findAll();
