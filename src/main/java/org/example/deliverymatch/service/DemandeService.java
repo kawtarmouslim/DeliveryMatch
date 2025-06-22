@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -86,6 +87,11 @@ public class DemandeService {
         return modelMapper.map(updated, DemandeDto.class);
     }
 
+    public List<DemandeDto> getDemande() {
+        List<Demande> demandes = demandeRepository.findAll();
+        return demandes.stream().map(u->modelMapper.map(u, DemandeDto.class))
+                .collect(Collectors.toList());
 
+    }
 
 }
